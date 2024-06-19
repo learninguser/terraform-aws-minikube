@@ -6,7 +6,7 @@ module "ec2_instance" {
   instance_type          = "t3.micro"
   vpc_security_group_ids = [aws_security_group.allow_minikube.id]
   subnet_id              = "subnet-0e241a2aea0c68c49" #replace your default subnet id
-  user_data              = file("docker.sh")
+  user_data              = file("install_kubectl.sh")
 
   tags = {
     Terraform   = "true"
@@ -34,25 +34,5 @@ resource "aws_security_group" "allow_minikube" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-data "aws_ami" "centos8" {
-  owners      = ["973714476881"]
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["Centos-8-DevOps-Practice"]
-  }
-
-  filter {
-    name   = "root-device-type"
-    values = ["ebs"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
   }
 }

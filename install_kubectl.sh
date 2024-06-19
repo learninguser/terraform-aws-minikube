@@ -30,34 +30,11 @@ else
     echo "You are root user"
 fi # fi means reverse of if, indicating condition end
 
-yum install -y yum-utils
-
-VALIDATE $? "Installed yum utils"
-
-yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-
-VALIDATE $? "Added docker repo"
-
-yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
-
-VALIDATE $? "Installed docker components"
-
-systemctl start docker
-
-VALIDATE $? "Started docker"
-
-systemctl enable docker
-
-VALIDATE $? "Enabled docker"
-
-usermod -aG docker centos
-
-VALIDATE $? "added centos user to docker group"
-
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 chmod +x kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
 mkdir -p /home/centos/.kube
+chown -R centos:centos /home/centos/.kube
 
 VALIDATE $? "Install kubectl"
 
